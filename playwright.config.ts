@@ -58,7 +58,7 @@ export default defineConfig({
       name: 'ui-tests',
       use: { ...devices['Desktop Chrome'] },
       testMatch: 'tests/*.spec.ts',
-    //  dependencies: ['api-preconditions']
+      dependencies: ['api-preconditions']
     },
 
     {
@@ -67,12 +67,12 @@ export default defineConfig({
       testMatch: '*api/*.spec.ts'
 
     },
-    // {
-    //   name: 'api-preconditions',
-    //   use: { ...devices['Desktop Chrome'] },
-    //   testMatch: '*preconditions/*.spec.ts'
+    {
+      name: 'api-preconditions',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: '*preconditions/*.spec.ts'
 
-    // },
+    },
 
     // {
     //   name: 'firefox',

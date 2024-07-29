@@ -1,5 +1,8 @@
 import test, { expect } from "@playwright/test";
 import { users } from "../../test-data/credentials";
+import createAuthCookies from "../../utils/api/cookies/createAuthCookies";
+import generateHeaderWithCookies from "../../utils/api/cookies/generateHeaderWithCookies";
+import getUserCarsList from "../../utils/api/garage/getUserCarsList";
 
 test('/cars/models public request', async ({ request }) => {
     const response = await request.get('/api/cars/models');
@@ -92,120 +95,94 @@ test.describe('GARAGE API TESTS with auth in BeforeEach', () => {
 
 test.describe('GARAGE API TESTS with auth in BeforeAll', () => {
 
-    let sid: string;
+    let authHeader;
 
-    test.beforeAll(async ({ request }) => {
-        const authRequest = await request.post('/api/auth/signin', {
-            data: {
-                "email": users.mainUser.email,
-                "password": users.mainUser.password,
-                "remember": true
-            }
-        })
-        const cookies = authRequest.headers()['set-cookie'];
-        console.log(authRequest.headers())
-        if (cookies) {
-            const cookieArray = cookies.split('\n');
-            for (const cookie of cookieArray) {
-                if (cookie.trim().startsWith('sid=')) {
-                    sid = (cookie.trim().split('=')[1]).split(';')[0];
-                    break;
-                }
-            }
-        }
+    test.beforeAll(async () => {
+        authHeader = await generateHeaderWithCookies(users.mainUser.email, users.mainUser.password);
     })
 
 
 
     test('/cars private request with auth in BeforeAll 1', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
+        const response = getUserCarsList(authHeader);
+        console.log(await response);
     })
 
-    
+
     test('/cars private request with auth in BeforeAll 2', async ({ request }) => {
         const response = await request.get('/api/cars/',
             {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
+                headers: authHeader
             }
         );
         const body = await response.json();
         console.log(body);
     })
 
-    
-    test('/cars private request with auth in BeforeAll 3', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
-    })
 
-    
-    test('/cars private request with auth in BeforeAll 4', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
-    })
+    // test('/cars private request with auth in BeforeAll 3', async ({ request }) => {
+    //     const response = await request.get('/api/cars/',
+    //         {
+    //             headers: {
+    //                 'Cookie': `sid=${sid}`
+    //             }
+    //         }
+    //     );
+    //     const body = await response.json();
+    //     console.log(body);
+    // })
 
-    
-    test('/cars private request with auth in BeforeAll 5', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
-    })
 
-    
-    test('/cars private request with auth in BeforeAll 6', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
-    })
+    // test('/cars private request with auth in BeforeAll 4', async ({ request }) => {
+    //     const response = await request.get('/api/cars/',
+    //         {
+    //             headers: {
+    //                 'Cookie': `sid=${sid}`
+    //             }
+    //         }
+    //     );
+    //     const body = await response.json();
+    //     console.log(body);
+    // })
 
-    
-    test('/cars private request with auth in BeforeAll 7', async ({ request }) => {
-        const response = await request.get('/api/cars/',
-            {
-                headers: {
-                    'Cookie': `sid=${sid}`
-                }
-            }
-        );
-        const body = await response.json();
-        console.log(body);
-    })
+
+    // test('/cars private request with auth in BeforeAll 5', async ({ request }) => {
+    //     const response = await request.get('/api/cars/',
+    //         {
+    //             headers: {
+    //                 'Cookie': `sid=${sid}`
+    //             }
+    //         }
+    //     );
+    //     const body = await response.json();
+    //     console.log(body);
+    // })
+
+
+    // test('/cars private request with auth in BeforeAll 6', async ({ request }) => {
+    //     const response = await request.get('/api/cars/',
+    //         {
+    //             headers: {
+    //                 'Cookie': `sid=${sid}`
+    //             }
+    //         }
+    //     );
+    //     const body = await response.json();
+    //     console.log(body);
+    // })
+
+
+    // test('/cars private request with auth in BeforeAll 7', async ({ request }) => {
+    //     const response = await request.get('/api/cars/',
+    //         {
+    //             headers: {
+    //                 'Cookie': `sid=${sid}`
+    //             }
+    //         }
+    //     );
+    //     const body = await response.json();
+    //     console.log(body);
+    // })
 
 
 

@@ -13,9 +13,9 @@ test.describe('Garage tests with POM', () => {
         await garagePage.clickAddCarButton();
     })
 
-    test.afterEach(async () => {
-        await garagePage.removeLastCar();
-    })
+    // test.afterEach(async () => {
+    //     await garagePage.removeLastCar();
+    // })
 
     test('@smoke Add [Audi] [A8] car to the garage', async ({ page }) => {
 
